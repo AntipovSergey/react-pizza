@@ -3,15 +3,13 @@ import React from 'react';
 const categories = [
 	'Все',
 	'Мясные',
-	'Вегетарианская',
+	'Вегетарианские',
 	'Гриль',
 	'Острые',
 	'Закрытые',
 ];
 
-const Categories = () => {
-	const [activeCategory, setActiveCategory] = React.useState(0);
-
+const Categories = ({ value, setCategoryId }) => {
 	return (
 		<div className='categories'>
 			<ul>
@@ -19,8 +17,8 @@ const Categories = () => {
 					return (
 						<li
 							key={category}
-							onClick={() => setActiveCategory(categoryIndex)}
-							className={activeCategory === categoryIndex ? 'active' : ''}
+							onClick={() => setCategoryId(categoryIndex)}
+							className={value === categoryIndex ? 'active' : ''}
 						>
 							{category}
 						</li>

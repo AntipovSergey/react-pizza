@@ -9,6 +9,11 @@ import { Skeleton } from '../components/PizzaBlock/Skeleton';
 function Home() {
 	const [pizzas, setPizzas] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [categoryId, setCategoryId] = React.useState(0);
+	const [sortType, setSortType] = React.useState({
+		name: 'популярности',
+		sortProperty: 'rating',
+	});
 
 	React.useEffect(() => {
 		const getPizzas = async () => {
@@ -20,12 +25,31 @@ function Home() {
 		getPizzas();
 	}, []);
 
+	React.useEffect(() => {
+		const getPizzas = async () => {
+			const category = categoryId > 0 ? `category=${categoryId}` : '';
+			const sortBy = sortType.sortProperty.replace('-', '');
+			const orderBy = sortType.sortProperty.startsWith('-') ? 'desc' : 'asc';
+
+			const { data: pizzas } = await axios(
+				`http://localhost:3001/pizzas?${category}&_sort=${sortBy}&_order=${orderBy}`
+			);
+			setPizzas(pizzas);
+			setIsLoading(false);
+		};
+		setIsLoading(true);
+		getPizzas();
+	}, [categoryId, sortType]);
+
 	return (
 		<div className='content'>
 			<div className='container'>
 				<div className='content__top'>
-					<Categories />
-					<Sort />
+					<Categories
+						value={categoryId}
+						setCategoryId={index => setCategoryId(index)}
+					/>
+					<Sort value={sortType} setSortType={index => setSortType(index)} />
 				</div>
 				<h2 className='content__title'>Все пиццы</h2>
 				<div className='content__items'>
