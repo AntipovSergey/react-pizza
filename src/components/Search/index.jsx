@@ -5,7 +5,10 @@ import styles from './Search.module.scss';
 import search from '../../assets/img/search.svg';
 import clear from '../../assets/img/close.svg';
 
-const Search = ({ searchValue, setSearchValue }) => {
+import { SearchContext } from '../../App';
+
+const Search = () => {
+	const { searchValue, setSearchValue } = React.useContext(SearchContext);
 	return (
 		<div className={styles.wrapper}>
 			<img className={styles.search} src={search} alt='Search' />
