@@ -6,7 +6,7 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 
-function Home() {
+function Home({ searchValue }) {
 	const [pizzas, setPizzas] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [categoryId, setCategoryId] = React.useState(0);
@@ -30,16 +30,17 @@ function Home() {
 			const category = categoryId > 0 ? `category=${categoryId}` : '';
 			const sortBy = sortType.sortProperty.replace('-', '');
 			const orderBy = sortType.sortProperty.startsWith('-') ? 'desc' : 'asc';
+			const search = searchValue ? `title_like=${searchValue}` : '';
 
 			const { data: pizzas } = await axios(
-				`http://localhost:3001/pizzas?${category}&_sort=${sortBy}&_order=${orderBy}`
+				`http://localhost:3001/pizzas?${search}${category}&_sort=${sortBy}&_order=${orderBy}`
 			);
 			setPizzas(pizzas);
 			setIsLoading(false);
 		};
 		setIsLoading(true);
 		getPizzas();
-	}, [categoryId, sortType]);
+	}, [categoryId, sortType, searchValue]);
 
 	return (
 		<div className='content'>
@@ -63,3 +64,8 @@ function Home() {
 }
 
 export default Home;
+
+/* 	.filter(pizza => {
+									const pizzaTitle = pizza.title.toLowerCase();
+									return pizzaTitle.includes(searchValue.toLowerCase());
+								}) */
