@@ -5,6 +5,7 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
+import Pagination from '../components/Pagination';
 
 function Home({ searchValue }) {
 	const [pizzas, setPizzas] = React.useState([]);
@@ -14,6 +15,7 @@ function Home({ searchValue }) {
 		name: 'популярности',
 		sortProperty: 'rating',
 	});
+	const [page, setPage] = React.useState(1);
 
 	React.useEffect(() => {
 		const getPizzas = async () => {
@@ -33,14 +35,14 @@ function Home({ searchValue }) {
 			const search = searchValue ? `title_like=${searchValue}` : '';
 
 			const { data: pizzas } = await axios(
-				`http://localhost:3001/pizzas?${search}${category}&_sort=${sortBy}&_order=${orderBy}`
+				`http://localhost:3001/pizzas?${search}${category}&_sort=${sortBy}&_order=${orderBy}&_page=${page}&_limit=4`
 			);
 			setPizzas(pizzas);
 			setIsLoading(false);
 		};
 		setIsLoading(true);
 		getPizzas();
-	}, [categoryId, sortType, searchValue]);
+	}, [categoryId, sortType, searchValue, page]);
 
 	return (
 		<div className='content'>
@@ -58,14 +60,12 @@ function Home({ searchValue }) {
 						? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
 						: pizzas.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
 				</div>
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<Pagination setPage={number => setPage(number)} />
+				</div>
 			</div>
 		</div>
 	);
 }
 
 export default Home;
-
-/* 	.filter(pizza => {
-									const pizzaTitle = pizza.title.toLowerCase();
-									return pizzaTitle.includes(searchValue.toLowerCase());
-								}) */
