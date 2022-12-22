@@ -9,7 +9,7 @@ const categories = [
 	'Закрытые',
 ];
 
-const Categories = ({ value, setCategoryId }) => {
+const Categories = ({ onChangeCategory, categoryId }) => {
 	return (
 		<div className='categories'>
 			<ul>
@@ -17,8 +17,8 @@ const Categories = ({ value, setCategoryId }) => {
 					return (
 						<li
 							key={category}
-							onClick={() => setCategoryId(categoryIndex)}
-							className={value === categoryIndex ? 'active' : ''}
+							onClick={() => onChangeCategory(categoryIndex)}
+							className={categoryId === categoryIndex ? 'active' : ''}
 						>
 							{category}
 						</li>
