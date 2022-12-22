@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -9,8 +10,13 @@ import Pagination from '../components/Pagination';
 
 import { SearchContext } from '../App';
 
+import { increment, decrement } from '../redux/slices/counter.js';
+
 function Home() {
 	const { searchValue } = React.useContext(SearchContext);
+
+	const count = useSelector(state => state.counter.value);
+	const dispatch = useDispatch();
 
 	const [pizzas, setPizzas] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
