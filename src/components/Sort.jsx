@@ -11,14 +11,29 @@ const sortOptions = [
 
 const Sort = ({ value, setSortType }) => {
 	const [isOpened, setIsOpened] = React.useState(false);
+	const sortRef = React.useRef();
 
 	const handleActiveSortOption = obj => {
 		setSortType(obj);
 		setIsOpened(false);
 	};
 
+	React.useEffect(() => {
+		const handleClickOutside = event => {
+			if (!event.path.includes(sortRef.current)) {
+				setIsOpened(false);
+			}
+		};
+
+		document.body.addEventListener('click', handleClickOutside);
+
+		return () => {
+			document.body.removeEventListener('click', handleClickOutside);
+		};
+	}, []);
+
 	return (
-		<div className='sort'>
+		<div className='sort' ref={sortRef}>
 			<div className='sort__label'>
 				<svg
 					width='10'
