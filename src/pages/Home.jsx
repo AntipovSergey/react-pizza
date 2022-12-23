@@ -15,7 +15,9 @@ import { SearchContext } from '../App';
 function Home() {
 	const { searchValue } = React.useContext(SearchContext);
 
-	const { categoryId, sortType } = useSelector(state => state.filter);
+	const { categoryId, sortType, currentPage } = useSelector(
+		state => state.filter
+	);
 	const dispatch = useDispatch();
 
 	const onChangeCategory = id => {
@@ -28,7 +30,6 @@ function Home() {
 
 	const [pizzas, setPizzas] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
-	const [page, setPage] = React.useState(1);
 
 	React.useEffect(() => {
 		const getPizzas = async () => {
@@ -48,14 +49,14 @@ function Home() {
 			const search = searchValue ? `title_like=${searchValue}` : '';
 
 			const { data: pizzas } = await axios(
-				`http://localhost:3001/pizzas?${search}${category}&_sort=${sortBy}&_order=${orderBy}&_page=${page}&_limit=4`
+				`http://localhost:3001/pizzas?${search}${category}&_sort=${sortBy}&_order=${orderBy}&_page=${currentPage}&_limit=4`
 			);
 			setPizzas(pizzas);
 			setIsLoading(false);
 		};
 		setIsLoading(true);
 		getPizzas();
-	}, [categoryId, sortType, searchValue, page]);
+	}, [categoryId, sortType, searchValue, currentPage]);
 
 	return (
 		<div className='content'>
@@ -74,7 +75,7 @@ function Home() {
 						: pizzas.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
 				</div>
 				<div style={{ display: 'flex', justifyContent: 'center' }}>
-					<Pagination setPage={number => setPage(number)} />
+					<Pagination />
 				</div>
 			</div>
 		</div>
