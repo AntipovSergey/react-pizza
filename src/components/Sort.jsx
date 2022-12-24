@@ -27,9 +27,7 @@ const Sort = ({ value, setSortType }) => {
 
 		document.body.addEventListener('click', handleClickOutside);
 
-		return () => {
-			document.body.removeEventListener('click', handleClickOutside);
-		};
+		return () => document.body.removeEventListener('click', handleClickOutside);
 	}, []);
 
 	return (
