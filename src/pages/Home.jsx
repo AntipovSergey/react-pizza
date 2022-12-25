@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setCategoryId, setSortType } from '../redux/slices/filterSlice';
+import { setPizzas } from '../redux/slices/pizzasSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -14,10 +15,11 @@ import { SearchContext } from '../App';
 
 function Home() {
 	const { searchValue } = React.useContext(SearchContext);
-
 	const { categoryId, sortType, currentPage } = useSelector(
 		state => state.filter
 	);
+	const { pizzas } = useSelector(state => state.pizzas);
+
 	const dispatch = useDispatch();
 
 	const onChangeCategory = id => {
@@ -28,14 +30,19 @@ function Home() {
 		dispatch(setSortType(obj));
 	};
 
-	const [pizzas, setPizzas] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 
 	React.useEffect(() => {
 		const getPizzas = async () => {
-			const { data: pizzas } = await axios('http://localhost:3001/pizzas');
-			setPizzas(pizzas);
-			setIsLoading(false);
+			try {
+				const { data: pizzas } = await axios('http://localhost:3001/pizzas');
+				dispatch(setPizzas(pizzas));
+				setIsLoading(false);
+			} catch (error) {
+				setIsLoading(false);
+				alert('Ошибка при получении пицц!');
+				console.log('Error', error);
+			}
 		};
 
 		getPizzas();
@@ -48,11 +55,18 @@ function Home() {
 			const orderBy = sortType.sortProperty.startsWith('-') ? 'desc' : 'asc';
 			const search = searchValue ? `title_like=${searchValue}` : '';
 
-			const { data: pizzas } = await axios(
-				`http://localhost:3001/pizzas?${search}${category}&_sort=${sortBy}&_order=${orderBy}&_page=${currentPage}&_limit=4`
-			);
-			setPizzas(pizzas);
-			setIsLoading(false);
+			try {
+				const { data: pizzas } = await axios(
+					`http://localhost:3001/pizzas?${search}${category}&_sort=${sortBy}&_order=${orderBy}&_page=${currentPage}&_limit=4`
+				);
+
+				dispatch(setPizzas(pizzas));
+				setIsLoading(false);
+			} catch (error) {
+				setIsLoading(false);
+				alert('Ошибка при получении пицц!');
+				console.log('Error', error);
+			}
 		};
 		setIsLoading(true);
 		getPizzas();
