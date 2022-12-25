@@ -1,12 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, minusItem, plusItem } from '../../redux/slices/cartSlice';
+import {
+	removeItem,
+	minusItem,
+	plusItem,
+	selectCartItemById,
+} from '../../redux/slices/cartSlice';
 
 const PizzaCart = ({ imageUrl, title, type, size, price, id, count }) => {
 	const dispatch = useDispatch();
-	const pizza = useSelector(state => state.cart.items).find(
-		item => item.id === id
-	);
+	const pizza = useSelector(selectCartItemById(id));
 	const pizzaCount = pizza.count;
 
 	const onClickPlus = () => {

@@ -2,8 +2,12 @@ import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setCategoryId, setSortType } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import {
+	selectFilter,
+	setCategoryId,
+	setSortType,
+} from '../redux/slices/filterSlice';
+import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -11,14 +15,11 @@ import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import NotFoundPizzas from '../components/NotFoundPizzas';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
-import { SearchContext } from '../App';
 
 function Home() {
-	const { searchValue } = React.useContext(SearchContext);
-	const { categoryId, sortType, currentPage } = useSelector(
-		state => state.filter
-	);
-	const { pizzas, status } = useSelector(state => state.pizzas);
+	const { categoryId, sortType, currentPage, searchValue } =
+		useSelector(selectFilter);
+	const { pizzas, status } = useSelector(selectPizzas);
 
 	const dispatch = useDispatch();
 
@@ -58,7 +59,6 @@ function Home() {
 							: pizzas.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
 					</div>
 				)}
-
 				<div style={{ display: 'flex', justifyContent: 'center' }}>
 					<Pagination />
 				</div>
