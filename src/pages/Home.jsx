@@ -15,6 +15,7 @@ import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import NotFoundPizzas from '../components/NotFoundPizzas';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
+import { Link } from 'react-router-dom';
 
 function Home() {
 	const { categoryId, sortType, currentPage, searchValue } =
@@ -56,7 +57,11 @@ function Home() {
 					<div className='content__items'>
 						{status === 'Loading'
 							? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-							: pizzas.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
+							: pizzas.map(pizza => (
+									<Link key={pizza.id} to={`pizza/${pizza.id}`}>
+										<PizzaBlock {...pizza} />
+									</Link>
+							  ))}
 					</div>
 				)}
 				<div style={{ display: 'flex', justifyContent: 'center' }}>

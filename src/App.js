@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 
 import './scss/app.scss';
 import NotFound from './pages/NotFound';
+import Pizza from './pages/Pizza';
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 				<Route path='/' element={<Layout />}>
 					<Route index element={<Home />} />
 					<Route path='cart' element={<Cart />} />
+					<Route path='pizza/:id' element={<Pizza />} />
 					<Route path='*' element={<NotFound />} />
 				</Route>
 			</Routes>
