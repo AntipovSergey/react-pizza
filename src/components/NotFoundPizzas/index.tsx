@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './NotFoundPizzas.module.scss';
 
-const index = () => {
+const index: React.FC = () => {
 	return (
 		<div className={styles.wrapper}>
 			<h2>Произошла ошибка 😕</h2>

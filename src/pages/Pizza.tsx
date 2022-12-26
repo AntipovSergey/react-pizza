@@ -14,9 +14,7 @@ const Pizza: React.FC = () => {
 	useEffect(() => {
 		async function fetchPizza() {
 			try {
-				const { data } = await axios(
-					`http://localhost:3001/pizzas/${String(id)}`
-				);
+				const { data } = await axios(`http://localhost:3001/pizzas/${id}`);
 				setPizza(data);
 			} catch (error) {
 				navigate('/');

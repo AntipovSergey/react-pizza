@@ -17,18 +17,18 @@ import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { Link } from 'react-router-dom';
 
-function Home() {
+const Home: React.FC = () => {
 	const { categoryId, sortType, currentPage, searchValue } =
 		useSelector(selectFilter);
 	const { pizzas, status } = useSelector(selectPizzas);
 
 	const dispatch = useDispatch();
 
-	const onChangeCategory = id => {
+	const onChangeCategory = (id: number) => {
 		dispatch(setCategoryId(id));
 	};
 
-	const onSort = obj => {
+	const onSort = (obj: any) => {
 		dispatch(setSortType(obj));
 	};
 
@@ -37,7 +37,10 @@ function Home() {
 		const sortBy = sortType.sortProperty.replace('-', '');
 		const orderBy = sortType.sortProperty.startsWith('-') ? 'desc' : 'asc';
 		const search = searchValue ? `title_like=${searchValue}` : '';
-		dispatch(fetchPizzas({ category, sortBy, orderBy, search, currentPage }));
+		dispatch(
+			//@ts-ignore
+			fetchPizzas({ category, sortBy, orderBy, search, currentPage })
+		);
 	}, [categoryId, sortType, searchValue, currentPage, dispatch]);
 
 	return (
@@ -57,7 +60,7 @@ function Home() {
 					<div className='content__items'>
 						{status === 'Loading'
 							? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-							: pizzas.map(pizza => (
+							: pizzas.map((pizza: any) => (
 									<Link key={pizza.id} to={`pizza/${pizza.id}`}>
 										<PizzaBlock {...pizza} />
 									</Link>
@@ -70,6 +73,6 @@ function Home() {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Home;

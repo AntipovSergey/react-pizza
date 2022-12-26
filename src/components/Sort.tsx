@@ -1,6 +1,16 @@
 import React from 'react';
 
-const sortOptions = [
+type SortOptionsItem = {
+	name: string;
+	sortProperty: string;
+};
+
+type SortProps = {
+	value: any;
+	setSortType: any;
+};
+
+const sortOptions: SortOptionsItem[] = [
 	{ name: 'популярности (ASC)', sortProperty: 'rating' },
 	{ name: 'популярности (DESC)', sortProperty: '-rating' },
 	{ name: 'цене (ASC)', sortProperty: 'price' },
@@ -9,17 +19,17 @@ const sortOptions = [
 	{ name: 'алфавиту (DESC)', sortProperty: '-title' },
 ];
 
-const Sort = ({ value, setSortType }) => {
+const Sort: React.FC<SortProps> = ({ value, setSortType }) => {
 	const [isOpened, setIsOpened] = React.useState(false);
-	const sortRef = React.useRef();
+	const sortRef = React.useRef<HTMLDivElement>(null);
 
-	const handleActiveSortOption = obj => {
+	const handleActiveSortOption = (obj: SortOptionsItem) => {
 		setSortType(obj);
 		setIsOpened(false);
 	};
 
 	React.useEffect(() => {
-		const handleClickOutside = event => {
+		const handleClickOutside = (event: any) => {
 			if (!event.path.includes(sortRef.current)) {
 				setIsOpened(false);
 			}

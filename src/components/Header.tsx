@@ -6,7 +6,7 @@ import logo from '../assets/img/pizza-logo.svg';
 import Search from './Search';
 import { selectCart } from '../redux/slices/cartSlice';
 
-const Header = () => {
+const Header: React.FC = () => {
 	const { totalPrice, totalPizzas } = useSelector(selectCart);
 	const { pathname } = useLocation();
 

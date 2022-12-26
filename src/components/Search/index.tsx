@@ -9,26 +9,26 @@ import styles from './Search.module.scss';
 import search from '../../assets/img/search.svg';
 import clear from '../../assets/img/close.svg';
 
-const Search = () => {
+const Search: React.FC = () => {
 	const [value, setValue] = React.useState('');
-	const inputRef = React.useRef();
+	const inputRef = React.useRef<HTMLInputElement>(null);
 
 	const dispatch = useDispatch();
 
 	const onClear = () => {
 		setValue('');
 		dispatch(setSearchValue(''));
-		inputRef.current.focus();
+		inputRef.current?.focus();
 	};
 
 	const updateSearchValue = React.useCallback(
-		_.debounce(str => {
+		_.debounce((str: string) => {
 			dispatch(setSearchValue(str));
 		}, 500),
 		[]
 	);
 
-	const onChangeInput = e => {
+	const onChangeInput = (e: any) => {
 		setValue(e.target.value);
 		updateSearchValue(e.target.value);
 	};

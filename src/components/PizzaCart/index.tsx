@@ -7,7 +7,25 @@ import {
 	selectCartItemById,
 } from '../../redux/slices/cartSlice';
 
-const PizzaCart = ({ imageUrl, title, type, size, price, id, count }) => {
+type PizzaCartProps = {
+	imageUrl: string;
+	title: string;
+	type: string;
+	size: number;
+	price: number;
+	id: number;
+	count: number;
+};
+
+const PizzaCart: React.FC<PizzaCartProps> = ({
+	imageUrl,
+	title,
+	type,
+	size,
+	price,
+	id,
+	count,
+}) => {
 	const dispatch = useDispatch();
 	const pizza = useSelector(selectCartItemById(id));
 	const pizzaCount = pizza.count;
