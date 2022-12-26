@@ -38,7 +38,7 @@ function Home() {
 		const orderBy = sortType.sortProperty.startsWith('-') ? 'desc' : 'asc';
 		const search = searchValue ? `title_like=${searchValue}` : '';
 		dispatch(fetchPizzas({ category, sortBy, orderBy, search, currentPage }));
-	}, [categoryId, sortType, searchValue, currentPage]);
+	}, [categoryId, sortType, searchValue, currentPage, dispatch]);
 
 	return (
 		<div className='content'>

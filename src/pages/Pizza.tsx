@@ -2,9 +2,13 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Pizza = () => {
+const Pizza: React.FC = () => {
 	const { id } = useParams();
-	const [pizza, setPizza] = React.useState();
+	const [pizza, setPizza] = React.useState<{
+		imageUrl: string;
+		title: string;
+		price: number;
+	}>();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -16,20 +20,20 @@ const Pizza = () => {
 				setPizza(data);
 			} catch (error) {
 				navigate('/');
-				throw new Error(error);
+				alert('Ошибка при получении пиццы');
 			}
 		}
 
 		fetchPizza();
-	}, []);
+	}, [id, navigate]);
 
 	if (!pizza) {
-		return <h2>Загрузка...</h2>;
+		return <>Загрузка...</>;
 	}
 
 	return (
 		<div>
-			<img src={pizza.imageUrl} />
+			<img src={pizza.imageUrl} alt='Pizza' />
 			<h2>{pizza.title}</h2>
 			<p>{pizza.price}</p>
 		</div>
