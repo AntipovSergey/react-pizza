@@ -1,6 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
-const initialState = {
+export type CartItem = {
+	id: number;
+	title: string;
+	price: number;
+	imageUrl: string;
+	type: string;
+	size: number;
+	count: number;
+};
+
+interface CartSliceState {
+	totalPrice: number;
+	totalPizzas: number;
+	items: CartItem[];
+}
+
+const initialState: CartSliceState = {
 	items: [],
 	totalPrice: 0,
 	totalPizzas: 0,
@@ -10,7 +27,7 @@ export const cartSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		addItem(state, action) {
+		addItem(state, action: PayloadAction<CartItem>) {
 			const findItem = state.items.find(item => item.id === action.payload.id);
 
 			if (findItem) {
@@ -28,7 +45,7 @@ export const cartSlice = createSlice({
 				0
 			);
 		},
-		plusItem(state, action) {
+		plusItem(state, action: PayloadAction<number>) {
 			const findItem = state.items.find(item => item.id === action.payload);
 			if (findItem) {
 				findItem.count++;
@@ -41,22 +58,25 @@ export const cartSlice = createSlice({
 
 			state.totalPizzas++;
 		},
-		minusItem(state, action) {
+		minusItem(state, action: PayloadAction<number>) {
 			const findItem = state.items.find(item => item.id === action.payload);
 			if (findItem) {
 				findItem.count--;
-			}
-			state.totalPrice -= findItem.price;
-			state.totalPizzas--;
-			if (findItem.count === 0) {
-				state.items = state.items.filter(obj => obj.id !== action.payload);
+
+				state.totalPrice -= findItem.price;
+				state.totalPizzas--;
+				if (findItem.count === 0) {
+					state.items = state.items.filter(obj => obj.id !== action.payload);
+				}
 			}
 		},
-		removeItem(state, action) {
+		removeItem(state, action: PayloadAction<number>) {
 			const findItem = state.items.find(item => item.id === action.payload);
 			state.items = state.items.filter(obj => obj.id !== action.payload);
-			state.totalPrice -= findItem.price * findItem.count;
-			state.totalPizzas -= findItem.count;
+			if (findItem) {
+				state.totalPrice -= findItem.price * findItem.count;
+				state.totalPizzas -= findItem.count;
+			}
 		},
 		clearItems(state) {
 			state.items = [];
@@ -66,8 +86,8 @@ export const cartSlice = createSlice({
 	},
 });
 
-export const selectCart = state => state.cart;
-export const selectCartItemById = id => state =>
+export const selectCart = (state: RootState) => state.cart;
+export const selectCartItemById = (id: number) => (state: RootState) =>
 	state.cart.items.find(item => item.id === id);
 
 export const { addItem, removeItem, clearItems, minusItem, plusItem } =

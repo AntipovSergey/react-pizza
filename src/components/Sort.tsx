@@ -1,18 +1,14 @@
 import React from 'react';
-
-type SortOptionsItem = {
-	name: string;
-	sortProperty: string;
-};
+import { Sort } from '../redux/slices/filterSlice';
 
 type SortProps = {
-	value: any;
-	setSortType: any;
+	value: Sort;
+	setSortType: (obj: Sort) => void;
 };
 
 type PopupClick = MouseEvent & { path: Node[] };
 
-const sortOptions: SortOptionsItem[] = [
+const sortOptions: Sort[] = [
 	{ name: 'популярности (ASC)', sortProperty: 'rating' },
 	{ name: 'популярности (DESC)', sortProperty: '-rating' },
 	{ name: 'цене (ASC)', sortProperty: 'price' },
@@ -21,11 +17,11 @@ const sortOptions: SortOptionsItem[] = [
 	{ name: 'алфавиту (DESC)', sortProperty: '-title' },
 ];
 
-const Sort: React.FC<SortProps> = ({ value, setSortType }) => {
+const SortPopup: React.FC<SortProps> = ({ value, setSortType }) => {
 	const [isOpened, setIsOpened] = React.useState(false);
 	const sortRef = React.useRef<HTMLDivElement>(null);
 
-	const handleActiveSortOption = (obj: SortOptionsItem) => {
+	const handleActiveSortOption = (obj: Sort) => {
 		setSortType(obj);
 		setIsOpened(false);
 	};
@@ -86,4 +82,4 @@ const Sort: React.FC<SortProps> = ({ value, setSortType }) => {
 	);
 };
 
-export default Sort;
+export default SortPopup;

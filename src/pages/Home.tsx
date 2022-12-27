@@ -1,34 +1,36 @@
 import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
 	selectFilter,
 	setCategoryId,
 	setSortType,
+	Sort,
 } from '../redux/slices/filterSlice';
-import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
+import { fetchPizzas, Pizza, selectPizzas } from '../redux/slices/pizzasSlice';
 
 import Categories from '../components/Categories';
-import Sort from '../components/Sort';
+import SortPopup from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import NotFoundPizzas from '../components/NotFoundPizzas';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
 	const { categoryId, sortType, currentPage, searchValue } =
 		useSelector(selectFilter);
 	const { pizzas, status } = useSelector(selectPizzas);
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const onChangeCategory = (id: number) => {
 		dispatch(setCategoryId(id));
 	};
 
-	const onSort = (obj: any) => {
+	const onSort = (obj: Sort) => {
 		dispatch(setSortType(obj));
 	};
 
@@ -37,10 +39,7 @@ const Home: React.FC = () => {
 		const sortBy = sortType.sortProperty.replace('-', '');
 		const orderBy = sortType.sortProperty.startsWith('-') ? 'desc' : 'asc';
 		const search = searchValue ? `title_like=${searchValue}` : '';
-		dispatch(
-			//@ts-ignore
-			fetchPizzas({ category, sortBy, orderBy, search, currentPage })
-		);
+		dispatch(fetchPizzas({ category, sortBy, orderBy, search, currentPage }));
 	}, [categoryId, sortType, searchValue, currentPage, dispatch]);
 
 	return (
@@ -51,7 +50,7 @@ const Home: React.FC = () => {
 						onChangeCategory={onChangeCategory}
 						categoryId={categoryId}
 					/>
-					<Sort value={sortType} setSortType={onSort} />
+					<SortPopup value={sortType} setSortType={onSort} />
 				</div>
 				{status !== 'Error' && <h2 className='content__title'>Все пиццы</h2>}
 				{status === 'Error' ? (
@@ -60,10 +59,8 @@ const Home: React.FC = () => {
 					<div className='content__items'>
 						{status === 'Loading'
 							? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-							: pizzas.map((pizza: any) => (
-									<Link key={pizza.id} to={`pizza/${pizza.id}`}>
-										<PizzaBlock {...pizza} />
-									</Link>
+							: pizzas.map((pizza: Pizza) => (
+									<PizzaBlock key={pizza.id} {...pizza} />
 							  ))}
 					</div>
 				)}

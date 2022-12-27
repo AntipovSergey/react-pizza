@@ -1,11 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-	removeItem,
-	minusItem,
-	plusItem,
-	selectCartItemById,
-} from '../../redux/slices/cartSlice';
+import { removeItem, minusItem, plusItem } from '../../redux/slices/cartSlice';
 
 type PizzaCartProps = {
 	imageUrl: string;
@@ -27,8 +22,6 @@ const PizzaCart: React.FC<PizzaCartProps> = ({
 	count,
 }) => {
 	const dispatch = useDispatch();
-	const pizza = useSelector(selectCartItemById(id));
-	const pizzaCount = pizza.count;
 
 	const onClickPlus = () => {
 		dispatch(plusItem(id));
@@ -75,7 +68,7 @@ const PizzaCart: React.FC<PizzaCartProps> = ({
 						/>
 					</svg>
 				</div>
-				<b>{pizzaCount}</b>
+				<b>{count}</b>
 				<div
 					className='button button--outline button--circle cart__item-count-plus'
 					onClick={onClickPlus}
