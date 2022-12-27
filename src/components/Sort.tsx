@@ -10,6 +10,8 @@ type SortProps = {
 	setSortType: any;
 };
 
+type PopupClick = MouseEvent & { path: Node[] };
+
 const sortOptions: SortOptionsItem[] = [
 	{ name: 'популярности (ASC)', sortProperty: 'rating' },
 	{ name: 'популярности (DESC)', sortProperty: '-rating' },
@@ -29,8 +31,9 @@ const Sort: React.FC<SortProps> = ({ value, setSortType }) => {
 	};
 
 	React.useEffect(() => {
-		const handleClickOutside = (event: any) => {
-			if (!event.path.includes(sortRef.current)) {
+		const handleClickOutside = (event: MouseEvent) => {
+			const _event = event as PopupClick;
+			if (sortRef.current && !_event.path.includes(sortRef.current)) {
 				setIsOpened(false);
 			}
 		};

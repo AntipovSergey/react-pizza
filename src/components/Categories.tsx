@@ -11,7 +11,7 @@ const categories = [
 
 type CategoriesProps = {
 	categoryId: number;
-	onChangeCategory: any;
+	onChangeCategory: (id: number) => void;
 };
 
 const Categories: React.FC<CategoriesProps> = ({
