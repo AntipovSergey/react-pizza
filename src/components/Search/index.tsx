@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { setSearchValue } from '../../redux/slices/filterSlice';
+import { setSearchValue } from '../../redux/slices/filter/slice';
 
 import styles from './Search.module.scss';
 

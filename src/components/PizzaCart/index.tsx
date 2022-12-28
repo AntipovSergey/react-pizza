@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { removeItem, minusItem, plusItem } from '../../redux/slices/cartSlice';
+import { removeItem, minusItem, plusItem } from '../../redux/slices/cart/slice';
 
 type PizzaCartProps = {
 	imageUrl: string;

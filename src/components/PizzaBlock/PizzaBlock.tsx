@@ -1,8 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { CartItem } from '../../redux/slices/cartSlice';
-import { addItem, selectCartItemById } from '../../redux/slices/cartSlice';
+
+import { CartItem } from '../../redux/slices/cart/types';
+
+import { addItem, selectCartItemById } from '../../redux/slices/cart/slice';
 
 type PizzaBlockProps = {
 	imageUrl: string;

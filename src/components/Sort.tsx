@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sort } from '../redux/slices/filterSlice';
+import { Sort } from '../redux/slices/filter/types';
 
 type SortPopupProps = {
 	value: Sort;
