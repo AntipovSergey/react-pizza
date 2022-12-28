@@ -26,13 +26,13 @@ const Home: React.FC = () => {
 
 	const dispatch = useAppDispatch();
 
-	const onChangeCategory = (id: number) => {
+	const onChangeCategory = React.useCallback((id: number) => {
 		dispatch(setCategoryId(id));
-	};
+	}, []);
 
-	const onSort = (obj: Sort) => {
+	const onSort = React.useCallback((obj: Sort) => {
 		dispatch(setSortType(obj));
-	};
+	}, []);
 
 	React.useEffect(() => {
 		const category = categoryId > 0 ? `category=${categoryId}` : '';

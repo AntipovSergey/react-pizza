@@ -65,9 +65,9 @@ export const cartSlice = createSlice({
 
 				state.totalPrice -= findItem.price;
 				state.totalPizzas--;
-				if (findItem.count === 0) {
-					state.items = state.items.filter(obj => obj.id !== action.payload);
-				}
+				// if (findItem.count === 0) {
+				// 	state.items = state.items.filter(obj => obj.id !== action.payload);
+				// }
 			}
 		},
 		removeItem(state, action: PayloadAction<number>) {
